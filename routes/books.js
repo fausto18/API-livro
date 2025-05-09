@@ -1,20 +1,22 @@
-
 const express = require('express');
-const app = express();
-const bookRoutes = require('./routes/books');
-require('dotenv').config();
-require('./database');
+const router = express.Router();
+const multer = require('multer');
+const {
+  createBook, getBooks, getBookById,
+  updateBook, deleteBook, downloadFile
+} = require('../controllers/booksController');
 
-app.use(express.json());
-app.use('/uploads', express.static('uploads')); // pasta pública para download
-app.use('/api/books', bookRoutes);
-
-// Rota raiz para verificação
-app.get('/', (req, res) => {
-  res.send('API de Livros online e funcional!');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
+const upload = multer({ storage });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor a correr em http://localhost:${PORT}`);
-});
+router.post('/', upload.single('file'), createBook);
+router.get('/', getBooks);
+router.get('/:id', getBookById);
+router.put('/:id', upload.single('file'), updateBook);
+router.delete('/:id', deleteBook);
+router.get('/download/:filename', downloadFile);
+
+module.exports = router;
