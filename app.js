@@ -15,29 +15,18 @@ if (!fs.existsSync(uploadPath)) {
 
 // Middlewares
 app.use(express.json());
-app.use('/uploads', express.static(uploadPath));
+app.use('/uploads', express.static(uploadPath)); // Expor arquivos públicos
 
-// Rotas principais
-app.use('/api/livros', bookRoutes); // ATENÇÃO: aqui uso /api/livros porque você mencionou isso várias vezes
+// Rotas
+app.use('/api/books', bookRoutes);
 
-// Rota raiz (healthcheck)
+// Rota raiz (ping/health)
 app.get('/', (req, res) => {
-  res.send('Teste seu front-end com API de Livros online e funcional!');
+  res.send('API de Livros online e funcional!');
 });
 
-// Tratamento para rotas inválidas
-app.use((req, res, next) => {
-  res.status(404).json({ error: 'Rota não encontrada' });
-});
-
-// Tratamento global de erros
-app.use((err, req, res, next) => {
-  console.error('Erro interno:', err);
-  res.status(500).json({ error: 'Erro interno do servidor' });
-});
-
-// Inicialização
+// Inicialização do servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor a correr na porta ${PORT}`);
+  console.log(Servidor a correr em http://localhost:${PORT});
 });
