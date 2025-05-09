@@ -22,11 +22,11 @@ app.use('/api/books', bookRoutes);
 
 // Rota raiz (ping/health)
 app.get('/', (req, res) => {
-  res.send('✅ API de Livros online e funcional!');
+  res.send('API de Livros online e funcional!');
 });
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor a correr em http://localhost:${PORT}`);
+  console.log(`Servidor a correr em http://localhost:${PORT}`);
 });
