@@ -15,19 +15,28 @@ if (!fs.existsSync(uploadPath)) {
 
 // Middlewares
 app.use(express.json());
-app.use('/uploads', express.static(uploadPath)); // Expor arquivos públicos
+app.use('/uploads', express.static(uploadPath));
 
-// Rotas
-app.use('/api/books', bookRoutes);
+// Rotas principais
+app.use('/api/livros', bookRoutes);
 
-// Rota raiz (ping/health)
+// Rota raiz (healthcheck)
 app.get('/', (req, res) => {
   res.send('API de Livros online e funcional!');
 });
 
-// Inicialização do servidor
+// Tratamento para rotas inválidas
+app.use((req, res) => {
+  res.status(404).json({ error: 'Rota não encontrada' });
+});
+
+// Tratamento global de erros
+app.use((err, req, res, next) => {
+  console.error('Erro interno:', err);
+  res.status(500).json({ error: 'Erro interno do servidor' });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor a correr em http://localhost:${PORT}`);
 });
-
