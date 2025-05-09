@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/uploads', express.static(uploadPath));
 
 // Rotas principais
-app.use('/api/livros', bookRoutes);
+app.use('/api/book', bookRoutes);
 
 // Rota raiz (healthcheck)
 app.get('/', (req, res) => {
