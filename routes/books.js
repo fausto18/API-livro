@@ -34,8 +34,11 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const allowed = ['.pdf', '.doc', '.docx', '.txt'];
     const ext = path.extname(file.originalname).toLowerCase();
-    if (allowed.includes(ext)) cb(null, true);
-    else cb(new Error('Tipo de arquivo não suportado'), false);
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Extensão de ficheiro não permitida: ${ext}`));
+    }
   }
 });
 
